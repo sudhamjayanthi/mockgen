@@ -2,6 +2,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 
 from flask import Flask, render_template, request, jsonify
+from termcolor import colored
 from time import sleep
 from PIL import Image
 from io import BytesIO
@@ -38,10 +39,9 @@ def gen_image():
         driver = webdriver.Chrome('chromedriver.exe', options=chrome_options)
         driver.set_window_size(1614, 828)
         
-        print(website)
         driver.get(website)
-
         sleep(1) # wait for the page to load
+        
         driver.get_screenshot_as_file(file_name)
         driver.quit()
 
@@ -61,7 +61,7 @@ def gen_image():
   
         return jsonify(img=str(img_str))
     except Exception as e:
-        print("Error occured -> \n", e)
+        print("Error occured -> \n", colored(e, 'red'))
         return jsonify(error="Error Occurred")
 
  
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-# Project Breakdown into smaller steps
+# ---- Brain Storming & Project Breakdown -----
 # 1) Open website, wait a second to load & take screenshot with selenium in headless mode
 # 2) Save the screenshot as ss.png & close the browser
 # 3) Open mockup file with PIL & overlay the screenshot in the coords of placeholder
