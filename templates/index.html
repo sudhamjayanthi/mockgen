@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MockGen</title>
+
+        <link rel="apple-touch-icon" sizes="180x180"
+            href="{{ url_for('static', filename='images/favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32"
+            href="{{ url_for('static', filename='images/favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16"
+            href="{{ url_for('static', filename='images/favicon/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>MockGen ✨</h1>
+        </header>
+
+        <main>
+            <div class="cta">
+                <input placeholder="enter your domain" type="text" id="website">
+                <button id="submit">generate</button>
+            </div>
+            <img alt="mockup" id="mockup">
+            <a style="display: none;" id="download" href="" download>click to download the high res version</a>
+
+        </main>
+
+        <footer>
+            <em><p>built by <a href="https://twiiter.com/sudhamjayanthi">sudham jayanthi</a></p></em>
+        </footer>
+
+        <script>
+            mockup = document.getElementById("mockup");
+            website = document.getElementById("website");
+            download = document.getElementById("download");
+
+            document.getElementById("submit").onclick = (e) => {
+                e.preventDefault();
+
+                if (!website.value) {
+                    return;
+                }
+
+                mockup.src = "{{ url_for('static', filename='images/loading.gif') }}";
+                mockup.style.marginTop = "7em";
+                mockup.style.width = "4em";
+                mockup.style.display = "inline-block";
+
+                fetch(`/gen?website=${website.value}`)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data.error) {
+                            alert("error occured, please try again!")
+                            mockup.style.display = "none";
+                        } else {
+                            imgData = "data:image/png;base64, " + data.img.slice(2, -1);
+                            mockup.style.width = "60vw";
+                            mockup.style.marginTop = "0px";
+                            mockup.src = imgData;
+
+                            // confetti 
+                            var count = 200;
+                            var defaults = {
+                                origin: { y: 0.7 }
+                            };
+
+                            function fire(particleRatio, opts) {
+                                confetti(Object.assign({}, defaults, opts, {
+                                    particleCount: Math.floor(count * particleRatio)
+                                }));
+                            }
+
+                            fire(0.25, {
+                                spread: 26,
+                                startVelocity: 55,
+                            });
+                            fire(0.2, {
+                                spread: 60,
+                            });
+                            fire(0.35, {
+                                spread: 100,
+                                decay: 0.91,
+                                scalar: 0.8
+                            });
+                            fire(0.1, {
+                                spread: 120,
+                                startVelocity: 25,
+                                decay: 0.92,
+                                scalar: 1.2
+                            });
+                            fire(0.1, {
+                                spread: 120,
+                                startVelocity: 45,
+                            });
+
+                            download.href = imgData;
+                            download.download = website.value + ".png";
+
+                            download.style.display = "inline";
+                        }
+                    });
+            };
+
+        </script>
+    </body>
+
+</html>

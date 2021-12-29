@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&display=swap");
+
+
+::selection {
+  background-color: #91d7ff;
+}
+ 
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header > h1 {
+  background: -webkit-linear-gradient(to right, #0043be 0%, #2bd5ff 100%);
+  background: -moz-linear-gradient(to right, #0043be 0%, #2bd5ff 100%);
+  background: linear-gradient(to right, #0043be 0%, #2bd5ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  padding: 1em;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  flex: 1;
+  max-height: 80vh;
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+input {
+  outline: none;
+  border-radius: 20px;
+  border: 1px solid rgb(185, 185, 185);
+  padding: 10px 15px;
+}
+
+#submit {
+  border: none;
+  color: white;
+  background-color: #0043be;
+  padding: 1em 2em;
+  border-radius: 20px;
+}
+
+img {
+  display: none;
+  height: auto;
+  width: 4em; 
+  max-height: 470px;
+  object-fit: contain;
+}
+
+footer {
+  text-align: center;
+  padding: 1em;
+}
+
+footer a {
+  color: rgb(41, 41, 41);
+  transition: 0.3s all;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #0043be;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
