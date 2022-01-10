@@ -1,1 +1,4 @@
-chromedriver.exe
+chromedriver
+chromedriver.exe 
+.replit
+__pycache__/*

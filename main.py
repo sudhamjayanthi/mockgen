@@ -8,13 +8,19 @@ from PIL import Image
 from io import BytesIO
 import base64
 import os 
+import stat
 
 app = Flask(__name__)
 
+st = os.stat('chromedriver')
+os.chmod('chromedriver', st.st_mode | stat.S_IEXEC)
+
 chrome_options = Options()
+chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--hide-scrollbars")
 
+driver = webdriver.Chrome('chromedriver', options=chrome_options)
 
 @app.route('/')
 def home():
@@ -36,7 +42,6 @@ def gen_image():
         # 2) Save the screenshot as ss.png & close the browser
         file_name = "ss.png"
 
-        driver = webdriver.Chrome('chromedriver.exe', options=chrome_options)
         driver.set_window_size(1614, 828)
         
         driver.get(website)
@@ -46,7 +51,7 @@ def gen_image():
         driver.quit()
 
         # 3) Open mockup file with PIL & overlay the screenshot in the coords of placeholder
-        mockup = Image.open('mockup.png')
+        mockup = Image.open('./static/images/mockup.png')
         ss = Image.open(file_name)
         mockup.paste(ss, (153, 160)) 
 
@@ -66,7 +71,7 @@ def gen_image():
 
  
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
 
 
 # ---- Brain Storming & Project Breakdown -----
@@ -75,3 +80,7 @@ if __name__ == '__main__':
 # 3) Open mockup file with PIL & overlay the screenshot in the coords of placeholder
 # 4) Now delete the screenshot to save space & then save the overlayed mockup as bytes 
 # 5) Encode the bytes to base64 and return it in json format
+
+## TODO 
+# - caching 
+# - setup a wsgi production server
