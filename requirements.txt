@@ -3,3 +3,4 @@ termcolor
 Flask
 Pillow
 gunicorn
+flask-caching
